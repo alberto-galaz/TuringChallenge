@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from service.chat_router import chat_router
 from service.execute_router import execute_router
+import uvicorn
 
 app = FastAPI()
 
@@ -22,5 +23,5 @@ def read_root():
     return {"message": "Backend RAG funcionando"}
 
 if __name__ == "__main__":
-    import uvicorn
+    
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True) 

@@ -11,6 +11,7 @@ const ChatLanding = () => {
   const [messages, setMessages] = useState([]); // historial de mensajes
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const [showResumen, setShowResumen] = useState(false);
 
   const API_URL = 'http://localhost:8000/chat';
 
@@ -36,6 +37,7 @@ const ChatLanding = () => {
         botMessage.rag_used = data.rag_used;
       }
       setMessages((prev) => [...prev, botMessage]);
+      setShowResumen(!!data.resumen_iniciado);
     } catch (err) {
       setMessages((prev) => [
         ...prev,
@@ -84,7 +86,7 @@ const ChatLanding = () => {
         <h1 style={{ 
           fontWeight: 800, 
           fontSize: 48, 
-          marginBottom: 120,
+          marginBottom: 40,
           color: '#A69581',
           marginTop: 40,
           marginLeft: 0,
@@ -139,6 +141,21 @@ const ChatLanding = () => {
             {loading ? '...' : 'Enviar'}
           </button>
         </div>
+        {showResumen && (
+          <div style={{
+            background: '#A69581',
+            color: '#59443F',
+            fontWeight: 700,
+            fontSize: 18,
+            padding: '12px 24px',
+            borderRadius: 12,
+            margin: '16px 0',
+            textAlign: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+          }}>
+            ⚠️ Se ha superado el límite de tokens. Se está resumiendo la conversación para continuar.
+          </div>
+        )}
         {/* Historial de mensajes tipo chat */}
         <div style={{
           maxWidth: 700,
@@ -169,14 +186,17 @@ const ChatLanding = () => {
               display: 'flex',
               alignItems: 'center',
               gap: 8,
+              flexDirection: 'column',
             }}>
-              {msg.sender === 'user' ? 'Tú: ' : 'Bot: '}
-              {msg.sender === 'bot' && (
-                <span title={msg.rag_used === true ? 'Respuesta basada en la base de datos' : msg.rag_used === false ? 'Respuesta solo del modelo' : ''} style={{ marginRight: 6, fontSize: 22 }}>
-                  {msg.rag_used === true ? '📚' : msg.rag_used === false ? '💬' : ''}
-                </span>
-              )}
-              {msg.text}
+              <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                {msg.sender === 'user' ? 'Tú: ' : 'Bot: '}
+                {msg.sender === 'bot' && (
+                  <span title={msg.rag_used === true ? 'Respuesta basada en la base de datos' : msg.rag_used === false ? 'Respuesta solo del modelo' : ''} style={{ marginRight: 6, fontSize: 22 }}>
+                    {msg.rag_used === true ? '📚' : msg.rag_used === false ? '💬' : ''}
+                  </span>
+                )}
+                {msg.text}
+              </div>
               {msg.image_base64 && (
                 <img
                   src={`data:image/png;base64,${msg.image_base64}`}
@@ -206,6 +226,7 @@ const ChatLanding = () => {
           )}
           <div ref={messagesEndRef} />
         </div>
+        {/* Elimino el componente Table400d y su uso */}
       </div>
     </>
   );

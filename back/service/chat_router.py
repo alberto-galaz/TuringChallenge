@@ -55,10 +55,12 @@ async def chat_endpoint(request: Request):
         for m in conversation_memory.buffer if m.content.strip()
     ])
     summary = None
+    resumen_iniciado = False
     if tokens > MAX_TOKENS_HISTORY:
         summary = summarize_history(history)
         conversation_memory.clear()
         conversation_memory.save_context({"input": f"[RESUMEN] {summary}"}, {"output": ""})
+        resumen_iniciado = True
     match = re.search(r"([\w\-]+\.pdf_p\d+_\d+)", question)
     if match:
         filename = match.group(1)
@@ -96,6 +98,8 @@ async def chat_endpoint(request: Request):
             response_payload["response"] += f"\n\n[Resultado de la ejecución Python]:\n{exec_result}"
         if image_b64:
             response_payload["image_base64"] = image_b64
+        if resumen_iniciado:
+            response_payload["resumen_iniciado"] = True
         return response_payload
     except Exception as e:
         print(f"[BACKEND][ERROR] {repr(e)}")

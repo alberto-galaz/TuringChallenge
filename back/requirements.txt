@@ -12,3 +12,6 @@ PyMuPDF
 sentence-transformers
 langchain-huggingface
 langchain-openai
+camelot-py[cv]
+pandas
+langgraph
