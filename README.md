@@ -1,4 +1,4 @@
-# Turing Challenge - Chatbot RAG + Ejecución de Código + Imágenes
+# Turing Challenge 
 
 Este proyecto es un sistema fullstack de chatbot con memoria dinámica, RAG (Retrieval-Augmented Generation), ejecución de código Python bajo demanda y soporte para imágenes extraídas de PDFs.
 
@@ -13,7 +13,7 @@ Este proyecto es un sistema fullstack de chatbot con memoria dinámica, RAG (Ret
 ### 1. Clona el repositorio y entra en la carpeta
 ```bash
 git clone <repo-url>
-cd Turing_Challenge
+cd TuringChallenge
 ```
 
 ### 2. Coloca tus PDFs en `back/data/`
